@@ -26,6 +26,7 @@ def issue_card(requests):
 
     if request["status"] != "approved":
         print("\nOnly approved requests can be issued.\n")
+        return
 
     if (
         not isinstance(request["approved_by"], str)
