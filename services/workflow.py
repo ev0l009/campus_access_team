@@ -24,6 +24,9 @@ def approve_request(requests):
 def issue_card(requests):
     request = get_request(requests)
 
+    if request is None:
+        return
+
     if request["status"] != "approved":
         print("\nOnly approved requests can be issued.\n")
         return
@@ -33,9 +36,6 @@ def issue_card(requests):
         or not request["approved_by"].strip()
     ):
         print("\nCannot issue a card without a recorded approver.\n")
-        return
-
-    if request is None:
         return
 
     request["status"] = "issued"
