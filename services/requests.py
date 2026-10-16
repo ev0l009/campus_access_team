@@ -41,7 +41,7 @@ def create_request(requests):
         "fellow_id": fellow_id,
         "card_type": card_type,
         "status": "requested",
-        "approved_by": None
+        "approved_by": "None"
     }
 
     print(
@@ -61,7 +61,7 @@ def validate_request_id(requests):
     request_id = input("\nEnter request ID: ")
     
     if request_id not in requests:
-        print(f"\nInvalid request ID: {request_id}\n")
+        print(f"\nInvalid request ID\n")
         return
 
     return requests[request_id]
