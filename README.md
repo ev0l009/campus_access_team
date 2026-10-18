@@ -1,56 +1,54 @@
 # Campus Access
 
-Campus Access is a Python CLI application for managing campus access-card requests. It supports request creation, approval, card issuance, returns, and JSON-based data persistence.
+Campus Access is a Python CLI application for managing campus access-card requests. It tracks requests through a strict lifecycle using JSON data persistence.
 
 ## Features
 
-- Create, view, and list access-card requests.
-- Support visitor, student, and staff cards.
-- Enforce the request workflow: `requested → approved → issued → returned`.
-- Validate inputs and prevent invalid status transitions.
-- Generate sequential request IDs.
-- Save and load requests using JSON.
-- Validate saved data and handle malformed files safely.
-- Automated tests using Python's `unittest`.
+- **Workflow Enforcement:** Restricts status transitions (`requested` → `approved` → `issued` → `returned`).
+- **Flexible Profiles:** Supports Visitor, Student, and Staff card configurations.
+- **ID Generation:** Automatically builds unique sequential IDs (e.g., `A001`).
+- **Fault-Tolerant Persistence:** Gracefully handles missing or corrupted JSON database files.
+- **Robust Verification:** Complete test coverage using the native `unittest` package.
 
-## Requirements
+## Project Structure
 
-- Python 3.12+
-- Python standard library only.
+```text
+.
+├── main.py              # Application entry point and CLI loop
+├── services/
+│   ├── requests.py      # Request CRUD, input validation, and ID parsing
+│   ├── workflow.py      # State transition logic (approval, issuance, returns)
+│   ├── storage.py       # JSON loading, saving, and folder generation
+│   └── ui.py            # User menu displays and option mapping
+├── tests/               # Automated test suites matching service layers
+└── data/                # Local database location (requests.json)
+```
 
 ## Getting Started
 
-Clone the repository and navigate to the project directory.
+### Prerequisites
+- Python 3.12+ (Uses standard library utilities only)
 
-Run the application:
-
+### Execution
+Run the terminal interface:
 ```bash
 python3 main.py
 ```
 
-Run the tests:
-
+### Testing
+Execute the entire automated test suite:
 ```bash
 python3 -m unittest discover -s tests -v
 ```
 
-## Project Structure
-
-- `main.py` — CLI and menu interface.
-- `campus_access/requests.py` — Request creation, lookup, and validation.
-- `campus_access/workflow.py` — Approval, issuance, and return operations.
-- `campus_access/storage.py` — JSON persistence and data validation.
-- `tests/` — Automated tests.
-- `data/` — Saved request data.
-
 ## Contributors
 
-### Engineer A — Request Management and Data Safety
-- Implemented request creation, validation, unique ID generation, and lookup.
-- Implemented JSON persistence and saved-data validation.
-- Wrote tests for request management and storage.
+### Engineer A — Request Management & Data Safety
+- Developed creation mechanics, input schemas, and automatic key parsing in `services/requests.py`.
+- Wrote storage boundaries, validation handlers, and directories setups in `services/storage.py`.
+- Built testing suites across `tests/test_requests.py` and `tests/test_storage.py`.
 
-### Engineer B — Workflow and CLI
-- Implemented request approval, card issuance, and card returns.
-- Built the command-line interface and user interaction.
-- Wrote tests for workflow transitions and invalid operations.
+### Engineer B — Workflow & CLI Interface
+- Programmed business state rules and transition guards in `services/workflow.py`.
+- Configured user terminal selection mappings and CLI layouts in `services/ui.py` and `main.py`.
+- Built lifecycle state checking assertions in `tests/test_workflow.py`.
