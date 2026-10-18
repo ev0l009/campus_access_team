@@ -1,13 +1,22 @@
-from string import digits
+"""Handles creation, retrieval, and structural parsing of individual card requests."""
 
+from string import digits
 from services.ui import get_card_type
 
 VALID_CARD_TYPES = {"visitor", "student", "staff"}
 REQUEST_ID_PREFIX = "A"
 REQUEST_ID_LENGTH = 4
 
-def generate_request_ids(requests):
 
+def generate_request_ids(requests):
+    """Generates the next sequential unique request ID (e.g., A001).
+
+    Raises:
+        ValueError: If all ID slots up to 999 are completely full.
+
+    Returns:
+        str: An unallocated unique request identifier string.
+    """
     number = 1
 
     while number <= 999:
@@ -20,8 +29,16 @@ def generate_request_ids(requests):
 
     raise ValueError("\nRequests creation limit reached.\n")
 
-def create_request(requests):
 
+def create_request(requests):
+    """Creates a new campus card request tracking structure.
+
+    Args:
+        requests (dict): The global requests dataset.
+
+    Returns:
+        dict: The updated requests dictionary if successful, else None.
+    """
     fellow_id = input("\nEnter your fellow ID: ")
 
     if not fellow_id.strip():
@@ -41,7 +58,7 @@ def create_request(requests):
         "fellow_id": fellow_id,
         "card_type": card_type,
         "status": "requested",
-        "approved_by": "None"
+        "approved_by": "None"  # engineer 2 should flag as it breaks view requests.
     }
 
     print(
@@ -57,19 +74,32 @@ def create_request(requests):
     )
     return requests
 
-def validate_request_id(requests):
+
+def get_request(requests):
+    """Retrieves a single request by searching for user-inputted ID.
+
+    Args:
+        requests (dict): The global requests dataset.
+
+    Returns:
+        dict: The matched request entry object, or None if missing.
+    """
     request_id = input("\nEnter request ID: ")
     
     if request_id not in requests:
-        print(f"\nInvalid request ID\n")
+        print(f"\nInvalid request ID\n")  # engineer 2 should flag: clean up message a bit
         return
 
     return requests[request_id]
 
 
 def view_request(requests):
+    """Displays verbose data details for a targeted individual ticket.
 
-    request = validate_request_id(requests)
+    Args:
+        requests (dict): The global requests dataset.
+    """
+    request = get_request(requests)
 
     if request is None:
         return
@@ -78,15 +108,21 @@ def view_request(requests):
         "\n┌────────────────────────────────────────┐\n"
         "│             Ticket Details             │\n"
         "├────────────────────────────────────────┤\n"
-        f"│ Request ID:     {request["id"]:<22} │\n"
-        f"│ Fellow ID:      {request["fellow_id"]:<22} │\n"
-        f"│ Card Type:      {request["card_type"].capitalize():<22} │\n"
-        f"│ Status:         {request["status"].capitalize():<22} │\n"
-        f"│ Approved by:    {request["approved_by"]:<22} │\n"
+        f"│ Request ID:     {request['id']:<22} │\n"
+        f"│ Fellow ID:      {request['fellow_id']:<22} │\n"
+        f"│ Card Type:      {request['card_type'].capitalize():<22} │\n"
+        f"│ Status:         {request['status'].capitalize():<22} │\n"
+        f"│ Approved by:    {request['approved_by']:<22} │\n"
         f"└────────────────────────────────────────┘\n"
     )
 
+
 def list_requests(requests):
+    """Prints a structured summary table containing all system entries.
+
+    Args:
+        requests (dict): The global requests dataset.
+    """
     if not requests:
         print("\nThere are no requests right now.\n")
         return

@@ -1,4 +1,12 @@
+"""Handles user interface menus and input selections for the system."""
+
+
 def get_dashboard_menu_opt():
+    """Displays the main control panel and returns the selected action.
+
+    Returns:
+        str: The string action key corresponding to the choice, or 'dashboard' if invalid.
+    """
     options = {
         "1": "create_request",
         "2": "view_request",
@@ -30,6 +38,14 @@ def get_dashboard_menu_opt():
 
 
 def get_card_type():
+    """Prompts the user to select an access group classification.
+
+    Raises:
+        ValueError: If the user selection is outside the valid 1-3 range.
+
+    Returns:
+        str: The chosen card type string ('visitor', 'student', or 'staff').
+    """
     card_types = {
         "1": "visitor",
         "2": "student",
